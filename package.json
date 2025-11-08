@@ -1,0 +1,21 @@
+{
+  "name": "nmcanvas",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "canvas interface for router",
+  "main": "index.js",
+"scripts": {
+  "validate:schema": "ajv validate -s schema/canonical-graph.schema.json -d model/*.json",
+  "test:canvas": "node -e \"import('./src/model/canvasContract.js').then(m => m.Canvas.loadModel())\""
+},
+
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "ajv": "^8.17.1",
+    "ajv-cli": "^5.0.0",
+    "ajv-dist": "^8.17.1",
+    "ajv-formats": "^3.0.1"
+  }
+}

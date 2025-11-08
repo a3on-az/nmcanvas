@@ -161,6 +161,7 @@ Appendixes
 **NM-Extractor**  - /Volumes/cloud/projects/nmrouter
 **tldraw Engine** - https://github.com/tldraw
 supabase credentials in file 
+
 2. Example Filenames
 draft_2025-11-08_intent-preservation-check.md
 review_2025-11-09_intent-preservation-check.md
@@ -430,3 +431,15 @@ No new AI research required.
 2.  Hook it into your **Archivist Agent** so each commit triggers automatic review.
 3.  Later add Canvas integration: a “📘 Multimodel Review” panel beside each artifact.
 
+## Implementation Directive
+
+We are adopting the **Hybrid Canvas Model** as defined by:
+- tldraw-style canvas for topology and spatial reasoning,
+- Canonical JSON graph for the source of truth,
+- Markdown sidecars for narrative context.
+
+Next steps:
+1. Implement canonical schema and serialization layout.
+2. Add ARCHITECTURE.md documenting editor/viewer/versioner roles.
+3. Establish Canvas API contract (`loadModel`, `saveModel`, `getDiff`).
+4. Integrate git commit/PR workflow.
