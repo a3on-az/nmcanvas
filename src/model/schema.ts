@@ -1,8 +1,6 @@
 // Canonical Graph Schema — source of truth for nmcanvas
 // Defines structural types for nodes, edges, and graphs.
 
-"$schema": "http://json-schema.org/draft-07/schema#",
-
 export type NodeId = string & { readonly brand: unique symbol };
 export type EdgeId = string & { readonly brand: unique symbol };
 
@@ -51,4 +49,3 @@ export interface CanonicalGraph {
   metadata?: GraphMetadata;
 }
 
-export default CanonicalGraph;

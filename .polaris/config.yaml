@@ -1,0 +1,76 @@
+# Polaris Configuration for nmcanvas
+# ---------------------------------
+# Purpose: Provide structured autonomy and guardrails for AI-driven maintenance
+# within the NeuraMem Canvas Router project.
+
+project:
+  name: nmcanvas
+  description: Canonical viewer/editor/versioner for NeuraMem Router
+  owner: hien-nguyen
+  visibility: private
+
+scope:
+  goals:
+    - Maintain the canonical canvas architecture for NeuraMem.
+    - Ensure AJV schema validation works for all graph models.
+    - Extend CLI tools: `validate:schema`, `diff:canvas`, and `commit:canvas`.
+    - Keep code consistent with TypeScript 5.6+ and NodeNext module resolution.
+  non_goals:
+    - No UI/tldraw integration at this stage.
+    - No modification of upstream NeuraMem core schemas.
+    - No deployment or cloud infrastructure tasks.
+
+agents:
+  - name: maintainer
+    role: Canonical Model Maintainer
+  entrypoint: src/model/canvasContract.ts
+    responsibilities:
+      - Keep contract aligned with schema/canonical-graph.schema.json.
+      - Ensure all npm scripts run cleanly (`full:test`, `validate:schema`).
+      - Write clear inline documentation for new functions.
+      - Create minimal, validated PRs for new modules (e.g., diff:canvas).
+    language: typescript
+    test_command: npm run full:test
+    validation_command: npm run validate:schema
+
+workflows:
+  - name: full-build
+    description: Clean, compile, and validate all canonical layers
+    steps:
+      - run: rm -rf dist
+      - run: npx tsc
+      - run: npm run validate:schema
+      - run: npm run test:canvas
+
+  - name: diff-check
+    description: Generate and display semantic diffs between two graph versions
+    steps:
+      - run: npm run diff:canvas
+
+  - name: commit-canonical
+    description: Validate and stage canonical changes for commit
+    steps:
+      - run: npm run validate:schema
+      - run: npm run test:canvas
+      - run: git add .
+      - run: git commit -m "maint: canonical model and contract validated"
+      - run: git push origin feature/canonical-schema
+
+constraints:
+  - Always validate before committing.
+  - Maintain deterministic JSON serialization (stable IDs, sorted keys).
+  - Follow AJV schema version draft-07.
+  - Do not modify `/model/graph.json` manually — use CanvasContract.saveModel().
+  - Avoid experimental Node import assertions; use runtime schema loading.
+
+observability:
+  telemetry: false
+  logs:
+    level: info
+    file: .polaris/logs/polaris.log
+
+metadata:
+  license: MIT
+  version: 0.1
+  created: 2025-11-08
+  maintained_by: NeuraMem Foundation

@@ -1,5 +1,7 @@
 # 🧭 NeuraMem Canvas Architecture
 
+
+
 ## 1. Canonical Model
 - Source of truth lives in `/model/`.
 - Components:
