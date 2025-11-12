@@ -1,0 +1,7 @@
+{
+  "version": "0.1",
+  "nodes": [
+    { "id": "route-1", "kind": "route", "label": "Main Route", "metadata": {} }
+  ],
+  "edges": []
+}

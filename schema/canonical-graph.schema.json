@@ -1,0 +1,50 @@
+{
+"$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://neuramem.ai/schemas/canonical-graph.schema.json",
+  "title": "Canonical Graph",
+  "type": "object",
+  "required": ["version", "nodes", "edges"],
+  "properties": {
+    "version": { "type": "string" },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "kind", "label"],
+        "properties": {
+          "id": { "type": "string" },
+          "kind": {
+            "type": "string",
+            "enum": ["route", "service", "backend", "policy", "transform"]
+          },
+          "label": { "type": "string" },
+          "metadata": { "type": "object" },
+          "doc": { "type": "string" }
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "from", "to", "kind"],
+        "properties": {
+          "id": { "type": "string" },
+          "from": { "type": "string" },
+          "to": { "type": "string" },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "route_to_service",
+              "service_to_backend",
+              "depends_on",
+              "condition"
+            ]
+          },
+          "constraints": { "type": "object" }
+        }
+      }
+    },
+    "metadata": { "type": "object" }
+  }
+}

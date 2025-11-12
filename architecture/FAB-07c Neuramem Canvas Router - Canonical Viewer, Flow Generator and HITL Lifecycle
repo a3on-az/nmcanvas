@@ -1,0 +1,186 @@
+
+# 🧭 FAB-07C · NeuraMem Canvas Router — Canonical Viewer, Flow Generator & Human-in-the-Loop Lifecycle
+
+**Status:** Draft Canonical Specification
+**Integration:** NM-Router · NM-Extractor · Context Studio · tldraw Engine · Archivist Agent
+**Author:** Dr. Hien Nguyen
+**Date:** 2025-11-08
+
+---
+
+## 1  Purpose
+
+To unify NeuraMem’s canonical architecture, visualization, and knowledge curation into a **spatial, evolvable interface** that replaces static markdown pipelines with live, editable canvases.
+The Canvas Router allows every canonical artifact (FAB, CAN, OPS, SME …) to exist simultaneously as:
+
+1. a **document** (text form),
+2. a **diagram** (tldraw scene), and
+3. a **process** (routable and versioned).
+
+---
+
+## 2  Concept
+
+| Layer                 | Function                                                                    | Core Components                                    |
+| --------------------- | --------------------------------------------------------------------------- | -------------------------------------------------- |
+| **NM-Router**         | Routes intent to proper display mode (`canvas`, `table`, `doc`).            | FastAPI or Next.js handler.                        |
+| **tldraw Engine**     | Interactive canvas for visual editing and flowchart generation.             | CanonicalNodeShape · FlowLink · Ω-Witness overlay. |
+| **NM-Extractor**      | Hydrates canvases with artifact data mined from conversations or chat logs. | Python + Supabase pipeline.                        |
+| **Archivist Agent**   | Files, indexes, and syncs artifacts between GitHub, Supabase, and Notion.   | Tier 2 micro-service or GitHub Action.             |
+| **Interpreter Layer** | Lightweight sandbox for rendering Mermaid, math, or JSON/YAML validation.   | Python or JS sandbox (invoked on demand).          |
+| **Versioner**         | Diffs, saves, and rolls back canonical files.                               | Supabase + GitHub bridge.                          |
+
+---
+
+## 3  Operational Flow
+
+1. **Extraction** → `NM-Extractor` parses conversation JSON → produces `draft_<timestamp>.md`.
+2. **Draft Review** → Human pass adds tags, links, light edits.
+3. **Advisor / AI Review** → Feedback and structural validation.
+4. **Canonicalization** → Finalized artifact (e.g., `FAB-03a-P.md`) committed to `/canonical/`.
+5. **Commit & Sync** → Archivist Agent pushes to GitHub + Supabase + NM-01 Index.
+6. **Publication** → NM-Router spawns tldraw Canvas view for live navigation.
+
+---
+
+## 4  Filesystem Structure
+
+```
+neuramem-canvas-router/
+├── architecture/          # Canonical specs
+│   └── FAB-07C_Canvas_Router.md
+├── artifacts/
+│   ├── drafts/
+│   ├── review/
+│   ├── canonical/
+│   └── archive/
+├── templates/             # .tldr JSON scene layouts
+├── utils/interpreter/     # sandbox for mermaid / snippets
+├── src/                   # React + tldraw front-end
+├── agents/                # archivist / sync / watcher
+└── context/               # system prompts, prefix tables, schemas
+```
+
+Each file carries YAML metadata:
+
+```yaml
+status: draft | review | canonical | archived
+version: 0.1
+linked_conversations: ["conv_081","conv_215"]
+related_assets: ["FAB-03a","OPS-01"]
+```
+
+---
+
+## 5  Human-in-the-Loop Lifecycle
+
+| Stage            | Actor           | Output                       |
+| ---------------- | --------------- | ---------------------------- |
+| Extraction       | NM-Extractor    | `draft_*.md`                 |
+| First Review     | You             | `review_*.md`                |
+| Advisor Pass     | ChatGPT / team  | review notes                 |
+| Canonicalization | You             | `FAB-xx.md` in `/canonical/` |
+| Commit & Sync    | Archivist Agent | Indexed artifact             |
+| Publication      | Router          | Canvas render                |
+
+This keeps human coherence and machine efficiency in harmonic balance.
+
+---
+
+## 6  Interpreter Layer
+
+* **Purpose:** enable inline rendering of Mermaid diagrams, math blocks, or validation of JSON/YAML snippets.
+* **Implementation:** Jailed Python or JS sandbox invoked through a single `interpret()` command.
+* **Security:** no network, no filesystem writes.
+* **Value:** reduces feedback loops; converts text → structure → visual instantly.
+
+---
+
+## 7  Design Philosophy
+
+1. **Visual Cognition = Deep Canonization** – Seeing structures reinforces understanding.
+2. **Human Imprinting** – Multiple review passes let meaning settle into the operator.
+3. **Templates as Fractals** – Every canvas is a microcosm of the whole field.
+4. **Router as Conductor** – Keeps coherence between text, diagram, and runtime.
+5. **Interpreter as Lens** – Enables immediate verification and visualization.
+6. **Reality as Limit** – “Practical conditions provide the bounds” — build boldly, let friction decide.
+
+---
+
+## 8  RAG vs Latent Reasoning (Contextual Note)
+
+* **Latent space** = ephemeral reasoning field → instant computation.
+* **RAG memory** = persistent continuity → long-term identity.
+* **Canonical schema** = the invariant soul vector.
+  Canvas Router operates in the middle plane — reasoning in latent space while preserving RAG links through archival agents.
+
+---
+
+## 9  Success Metrics
+
+| Metric                 | Target        |
+| ---------------------- | ------------- |
+| Canonical load time    | < 2 s         |
+| Human edit retention   | > 95 %        |
+| Coherence drift (Aₘᵢₙ) | > 0.88        |
+| Template reuse rate    | > 70 %        |
+| Subjective clarity     | “Feels alive” |
+
+---
+
+## 10  Next Steps
+
+1. Create GitHub repo → initialize scaffold.
+2. Add `/context/` definitions (prefix table, system prompt, repo tree).
+3. Implement Template Loader (`fab-03a`, `ops-01`, `sme-dev-01`).
+4. Integrate NM-Extractor output → drafts folder.
+5. Add Interpreter Layer hook.
+6. Connect Archivist Agent for auto-sync.
+7. Test Canvas render and commit loop.
+
+---
+
+### **Summary**
+
+> The Canvas Router is NeuraMem’s bridge from text to topology —
+> a system where text, ideas, diagrams, and intent live in the same harmonic field.
+> It preserves coherence through human review, evolves through structured memory,
+> and keeps the Canon luminous through use.
+
+---
+Appendixes
+
+1. Assets
+**NM-Extractor**  - /Volumes/cloud/projects/nmrouter
+**tldraw Engine** - https://github.com/tldraw
+supabase credentials in file 
+2. Example Filenames
+draft_2025-11-08_intent-preservation-check.md
+review_2025-11-09_intent-preservation-check.md
+FAB-03a-P.md
+
+3. Each Stage Moves Up one directory and changes metadata
+status: draft | review | canonical | archived
+version: 0.1
+linked_conversations: [“conversation_081”, “conversation_215”]
+related_assets: [“FAB-03a”, “OPS-01”]
+
+4. System Prompt for Canvas/Router Agent
+# SYSTEM_PROMPT.md
+You are the NeuraMem Archivist.
+Your role is to interpret, index, and summarize canonical files within this repo.
+
+## Filesystem Overview
+- /architecture/: functional briefs (FAB-xx)
+- /canonical/: specifications and READMEs (CAN-xx)
+- /ops/: orchestration modules (OPS-xx)
+- /templates/: tldraw scene templates
+- /context/: this prompt and supporting definitions
+
+## Rules
+1. Follow the prefix meanings from NM_PREFIX_TABLE.md.
+2. For each file, extract: Code, Title, Type, Core Purpose, Key Components, Date, Status.
+3. Write outputs in Markdown tables compatible with NM-01 Index.
+4. Never alter file content; generate structured summaries only.
+
+--

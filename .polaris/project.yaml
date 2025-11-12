@@ -1,0 +1,76 @@
+# Cline Project Manifest for nmcanvas
+# -----------------------------------
+# Purpose: Guide autonomous AI development agents (Cline) within the
+# NeuraMem Canvas Router project to maintain canonical schema coherence
+# and extend the toolchain safely.
+
+project:
+  name: nmcanvas
+  description: Canonical viewer/editor/versioner for NeuraMem Router
+  owner: hien-nguyen
+  visibility: private
+
+scope:
+  goals:
+    - Maintain canonical canvas architecture integrity for NeuraMem.
+    - Ensure AJV validation passes for all canonical graph models.
+    - Extend CLI utilities: `validate:schema`, `diff:canvas`, and `commit:canvas`.
+    - Keep TypeScript 5.6+/NodeNext compatibility across all modules.
+  non_goals:
+    - No UI/tldraw integration in this repo.
+    - No modification of upstream /neuramem-core schemas.
+    - No deployment, containerization, or cloud runtime work here.
+
+agents:
+  - name: maintainer
+    role: "Canonical Schema & Contract Maintainer"
+  entrypoint: src/model/canvasContract.ts
+    language: typescript
+    goals:
+      - Keep contract and schema in sync.
+      - Maintain all npm scripts in working state.
+      - Generate inline docs and typed method signatures.
+      - Add CLI modules (e.g., `diff:canvas`) following AJV-validated workflow.
+    test_command: npm run full:test
+    validation_command: npm run validate:schema
+
+workflows:
+  - name: full-build
+    description: Clean, compile, and validate all canonical layers
+    steps:
+      - run: rm -rf dist
+      - run: npx tsc
+      - run: npm run validate:schema
+      - run: npm run test:canvas
+
+  - name: diff-check
+    description: Compare two graph versions and output semantic diffs
+    steps:
+      - run: npm run diff:canvas
+
+  - name: commit-canonical
+    description: Validate and commit canonical changes safely
+    steps:
+      - run: npm run validate:schema
+      - run: npm run test:canvas
+      - run: git add .
+      - run: git commit -m "maint: canonical model validated"
+      - run: git push origin feature/canonical-schema
+
+constraints:
+  - Always validate before committing.
+  - Maintain deterministic JSON (sorted keys, stable IDs).
+  - Use AJV draft-07 schema version.
+  - Avoid import assertions; prefer runtime schema loading.
+  - Never modify /model/graph.json manually — use CanvasContract methods.
+
+observability:
+  telemetry: false
+  logs:
+    level: info
+    path: .cline/logs/cline.log
+
+metadata:
+  version: 0.1
+  created: 2025-11-08
+  maintained_by: NeuraMem Foundation
